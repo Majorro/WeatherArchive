@@ -1,4 +1,4 @@
-# Weather Archive
+# WeatherArchive
 
 This is an ASP.NET Core MVC app that allows upload and explore weather archives.
 
@@ -38,7 +38,7 @@ docker compose up --build
 
 ## Usage demonstration
 
-![demo](https://s10.gifyu.com/images/demo88fee9982f8333d5.gif)
+![demo](Demos/demo.gif)
 
 ## License
 
