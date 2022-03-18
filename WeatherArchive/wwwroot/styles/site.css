@@ -1,0 +1,31 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.btn:hover {
+    background-color: #cccccc;
+}
+
+.btn:active {
+    background-color: #949494;
+    transition: 0;
+}
+
+.header {
+    margin-bottom: 0.5em;
+}

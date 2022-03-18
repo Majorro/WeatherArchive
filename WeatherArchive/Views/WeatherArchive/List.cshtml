@@ -1,0 +1,161 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using WeatherArchive.Utils
+
+@model PaginatedList<ArchiveEntry>
+
+@{
+    ViewData["Title"] = "Архив";
+}
+
+<h1 class="header">Архив</h1>
+
+<form id="data-selector-form" enctype="multipart/form-data" method="get" asp-controller="WeatherArchive" asp-action="List">
+    <div id="filtration-container">
+        <label>Показывать</label>
+        <select id="list-type-selector" name="listType" asp-items="Html.GetEnumSelectList<ArchiveEntry.ListFor>()"></select>
+        <select id="month-selector" name="month" asp-items="Html.GetEnumSelectList<ArchiveEntry.Month>()"></select>
+        <input id="year-selector" name="year" type="number" min="@ViewData["minYearSelection"]" max=@DateTime.Now.Year.ToString() step="1" value="@DateTime.Now.Year.ToString()" />
+    </div>
+
+    <div id="page-size-container">
+        <label>Количество записей на странице</label>
+        <select id="page-size-selector" name="pageSize" asp-items="Model.PageSizeList"></select>
+    </div>
+</form>
+
+<table id="data-table" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Timestamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Temperature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].RelativeHumidity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].DewPoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].AtmospherePressure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].WindDirection)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].WindSpeed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Cloudiness)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].CloudBase)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].HorizontalVisibility)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].WeatherСonditions)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) 
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Timestamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Temperature)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RelativeHumidity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DewPoint)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AtmospherePressure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WindDirection)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WindSpeed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cloudiness)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CloudBase)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HorizontalVisibility)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WeatherСonditions)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+@* a better solution? *@
+<a asp-action="List"
+   asp-route-listType="@TempData["listTypeValue"]"
+   asp-route-page="@(1)"
+   asp-route-pageSize="@TempData["pageSizeValue"]"
+   asp-route-month="@TempData["monthValue"]"
+   asp-route-year="@TempData["yearValue"]"
+   class="btn btn-default nav-page @prevDisabled">
+    В начало
+</a>
+<a asp-action="List"
+   asp-route-listType="@TempData["listTypeValue"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-pageSize="@TempData["pageSizeValue"]"
+   asp-route-month="@TempData["monthValue"]"
+   asp-route-year="@TempData["yearValue"]"
+   class="btn btn-default nav-page @prevDisabled">
+    Предыдущая
+</a>
+<a asp-action="List"
+   asp-route-listType="@TempData["listTypeValue"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-pageSize="@TempData["pageSizeValue"]"
+   asp-route-month="@TempData["monthValue"]"
+   asp-route-year="@TempData["yearValue"]"
+   class="btn btn-default nav-page @nextDisabled">
+    Следующая
+</a>
+<a asp-action="List"
+   asp-route-listType="@TempData["listTypeValue"]"
+   asp-route-page="@(Model.TotalPages)"
+   asp-route-pageSize="@TempData["pageSizeValue"]"
+   asp-route-month="@TempData["monthValue"]"
+   asp-route-year="@TempData["yearValue"]"
+   class="btn btn-default nav-page @nextDisabled">
+    В конец
+</a>
+
+@section Styles {
+    <link rel="stylesheet" href="~/styles/list.css" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#list-type-selector").val(@TempData["listTypeValue"]);
+        $("#month-selector").val(@TempData["monthValue"]);
+        $("#year-selector").val(@TempData["yearValue"]);
+    </script>
+    <script type="text/javascript" src="~/scripts/list.js"></script>
+}

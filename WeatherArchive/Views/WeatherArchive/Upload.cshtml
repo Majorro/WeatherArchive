@@ -1,0 +1,35 @@
+﻿@using WeatherArchive.Controllers
+@{
+    ViewData["Title"] = "Загрузить";
+}
+
+<h1 class="header">Загрузить архивы</h1>
+
+<form enctype="multipart/form-data" method="post" asp-controller="WeatherArchive" asp-action="Upload">
+    @Html.HttpMethodOverride(HttpMethod.Put)
+    <dl>
+        <dt>
+            <label>Вставьте один или несколько файлов с архивами погоды, имеющих одно из расширений: @WeatherArchiveController.SupportedFileExtensions.Aggregate((lhs, rhs) => lhs+", "+rhs)</label>
+        </dt>
+        <dd>
+            <input type="file" name="archiveFiles" id="archive-files" multiple />
+            <input class="btn" type="submit" value="Загрузить"  />
+        </dd>
+    </dl>
+</form>
+
+@if(TempData["errorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <a href="" class="close" data-dismiss="alert">&times;</a>
+        @TempData["errorMessage"]
+    </div>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/styles/upload.css" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/scripts/upload.js"></script>
+}
